@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../../site.config.js';
+---
+
+<BaseLayout
+  title="문의"
+  description={`${siteConfig.siteName} 문의 및 상담 안내`}
+  canonicalPath="/contact/"
+>
+  <section class="page-heading">
+    <p class="eyebrow">{siteConfig.company}</p>
+
+    <h1>문의 및 상담</h1>
+
+    <p class="lead">
+      {siteConfig.siteDescription}
+    </p>
+  </section>
+
+  <section class="contact-content">
+    <p>
+      <strong>{siteConfig.company}</strong>에서는
+      <strong> {siteConfig.siteName}</strong> 관련 문의를
+      전화, 문자, 카카오톡으로 상담해 드리고 있습니다.
+    </p>
+
+    <p>
+      궁금한 사항이나 이용 관련 문의가 있으시면
+      편하신 방법으로 연락해 주세요.
+    </p>
+  </section>
+
+  <section class="contact-card">
+    <h2>상담 연락처</h2>
+
+    <ul class="contact-list">
+      <li>
+        <strong>업체명</strong>
+        <span>{siteConfig.company}</span>
+      </li>
+
+      <li>
+        <strong>전화 상담</strong>
+        <a href={`tel:${siteConfig.phone}`}>
+          {siteConfig.phone.replace(
+            /(\d{3})(\d{4})(\d{4})/,
+            '$1-$2-$3'
+          )}
+        </a>
+      </li>
+
+      <li>
+        <strong>문자 상담</strong>
+        <a href={`sms:${siteConfig.sms}`}>
+          {siteConfig.sms.replace(
+            /(\d{3})(\d{4})(\d{4})/,
+            '$1-$2-$3'
+          )}
+        </a>
+      </li>
+
+      <li>
+        <strong>카카오톡</strong>
+        <a
+          href={siteConfig.kakao}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          카카오톡 상담하기
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <div class="ad-slot">
+    상담 안내 / 배너 영역
+  </div>
+</BaseLayout>
+
+<style>
+.contact-content{
+    margin:2rem 0;
+    line-height:1.9;
+}
+
+.contact-card{
+    margin-top:2rem;
+    padding:2rem;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+}
+
+.contact-card h2{
+    margin-top:0;
+}
+
+.contact-list{
+    list-style:none;
+    padding:0;
+    margin:1.5rem 0 0;
+}
+
+.contact-list li{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    padding:14px 0;
+    border-bottom:1px solid #eee;
+}
+
+.contact-list li:last-child{
+    border-bottom:none;
+}
+
+.contact-list strong{
+    color:#111827;
+}
+
+.contact-list span{
+    color:#374151;
+}
+
+.contact-list a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.contact-list a:hover{
+    text-decoration:underline;
+}
+
+@media (max-width:768px){
+    .contact-list li{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+</style>

@@ -1,0 +1,33 @@
+---
+import { formatDate, getCategoryUrl, getPostUrl, getTagUrl } from '../lib/posts';
+
+const { posts } = Astro.props;
+---
+
+<div class="post-list">
+  {posts.map((post) => (
+    <article class="post-card">
+      <a class="post-image-link" href={getPostUrl(post.data.slug)} aria-label={`${post.data.title} 읽기`}>
+        <img
+          src={post.data.image}
+          alt={`${post.data.title} 대표 이미지`}
+          width="960"
+          height="540"
+          loading="lazy"
+        />
+      </a>
+      <div class="post-card-body">
+        <p class="post-meta">
+          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          <span aria-hidden="true">/</span>
+          <a href={getCategoryUrl(post.data.category)}>{post.data.category}</a>
+        </p>
+        <h2><a href={getPostUrl(post.data.slug)}>{post.data.title}</a></h2>
+        <p>{post.data.description}</p>
+        <div class="tag-list" aria-label="태그">
+          {post.data.tags.map((tag) => <a href={getTagUrl(tag)}>#{tag}</a>)}
+        </div>
+      </div>
+    </article>
+  ))}
+</div>

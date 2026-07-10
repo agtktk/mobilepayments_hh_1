@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../../site.config.js';
+import { formatDate, getAllPosts, getCategoryUrl, getPostUrl, getTagUrl } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const Content = post.Content;
+const image = post.data.image || siteConfig.defaultImage;
+const canonicalPath = getPostUrl(post.data.slug);
+const canonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
+const imageUrl = new URL(image, siteConfig.siteUrl).toString();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.description,
+  image: imageUrl,
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: siteConfig.author
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: siteConfig.siteName,
+    logo: {
+      '@type': 'ImageObject',
+      url: imageUrl
+    }
+  },
+  mainEntityOfPage: canonicalUrl
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  canonicalPath={canonicalPath}
+  image={image}
+  type="article"
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="page-heading">
+      <p class="post-meta">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        <span aria-hidden="true">/</span>
+        <a href={getCategoryUrl(post.data.category)}>{post.data.category}</a>
+      </p>
+      <h1>{post.data.title}</h1>
+      <p class="lead">{post.data.description}</p>
+      <div class="tag-list" aria-label="태그">
+        {post.data.tags.map((tag) => <a href={getTagUrl(tag)}>#{tag}</a>)}
+      </div>
+    </header>
+
+    <img class="hero-image" src={image} alt={`${post.data.title} 대표 이미지`} width="1200" height="675" />
+
+    <div class="article-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

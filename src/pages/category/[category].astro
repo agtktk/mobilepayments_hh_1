@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getAllPosts, getCategories, normalizePathSegment } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  return getCategories(posts).map((category) => ({
+    params: { category: normalizePathSegment(category) },
+    props: { category, posts: posts.filter((post) => post.data.category === category) }
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`${category} 카테고리`}
+  description={`${category} 카테고리의 글 목록입니다.`}
+  canonicalPath={`/category/${normalizePathSegment(category)}/`}
+>
+  <section class="page-heading">
+    <p class="eyebrow">Category</p>
+    <h1>{category}</h1>
+    <p class="lead">{category} 카테고리에 발행된 글입니다.</p>
+  </section>
+  <PostList posts={posts} />
+</BaseLayout>

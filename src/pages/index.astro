@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { siteConfig } from '../../site.config.js';
+import { getAllPosts } from '../lib/posts';
+
+const posts = await getAllPosts();
+const recentPosts = posts.slice(0, 6);
+---
+
+<BaseLayout title={siteConfig.siteName} description={siteConfig.siteDescription} canonicalPath="/">
+  <section class="page-heading">
+    <p class="eyebrow">희망티켓 010-9469-1051</p>
+    <h1>{siteConfig.siteName}</h1>
+    <p class="lead">{siteConfig.siteDescription}</p>
+  </section>
+
+  <PostList posts={recentPosts} />
+</BaseLayout>

@@ -1,0 +1,332 @@
+---
+import { siteConfig } from '../../site.config.js';
+import FloatingContactButtons from '../components/FloatingContactButtons.astro';
+
+const {
+  title = siteConfig.siteName,
+  description = siteConfig.siteDescription,
+  canonicalPath = Astro.url.pathname,
+  image = siteConfig.defaultImage,
+  type = 'website',
+  jsonLd
+} = Astro.props;
+
+const canonicalUrl = new URL(canonicalPath, siteConfig.siteUrl).toString();
+const imageUrl = new URL(image, siteConfig.siteUrl).toString();
+const pageTitle = title === siteConfig.siteName ? title : `${title} | ${siteConfig.siteName}`;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {siteConfig.naverVerificationCode && <meta name="naver-site-verification" content={siteConfig.naverVerificationCode} />}
+    {siteConfig.googleVerificationCode && <meta name="google-site-verification" content={siteConfig.googleVerificationCode} />}
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={siteConfig.siteName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <link rel="alternate" type="application/rss+xml" title={siteConfig.siteName} href="/rss.xml" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <style is:global>
+      :root {
+        color-scheme: light;
+        --bg: #ffffff;
+        --text: #1f2933;
+        --muted: #667085;
+        --line: #e5e7eb;
+        --accent: #0f766e;
+        --accent-soft: #ecfdf5;
+        --max: 760px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.75;
+        text-rendering: optimizeLegibility;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration-color: color-mix(in srgb, currentColor 28%, transparent);
+        text-underline-offset: 0.18em;
+      }
+
+      a:hover {
+        color: var(--accent);
+      }
+
+      .site-header {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .site-nav,
+      .site-footer,
+      main {
+        width: min(100% - 32px, var(--max));
+        margin-inline: auto;
+      }
+
+      .site-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        min-height: 68px;
+      }
+
+      .brand {
+        font-size: 1.05rem;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      main {
+        padding: 40px 0 56px;
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.92rem;
+        padding: 28px 0 40px;
+      }
+
+      .page-heading {
+        margin-bottom: 32px;
+      }
+
+      .eyebrow,
+      .post-meta {
+        color: var(--muted);
+        font-size: 0.92rem;
+        margin: 0 0 8px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1.25;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 8vw, 3.2rem);
+        margin: 0 0 16px;
+      }
+
+      h2 {
+        font-size: 1.45rem;
+        margin: 0 0 10px;
+      }
+
+      p {
+        margin: 0 0 18px;
+      }
+
+      .lead {
+        color: var(--muted);
+        font-size: 1.12rem;
+      }
+
+      .post-list {
+        display: grid;
+        gap: 28px;
+      }
+
+      .post-card {
+        border-bottom: 1px solid var(--line);
+        display: grid;
+        gap: 18px;
+        padding-bottom: 28px;
+      }
+
+      .post-card:last-child {
+        border-bottom: 0;
+      }
+
+      .post-image-link {
+        overflow: hidden;
+        border-radius: 8px;
+        background: #f2f4f7;
+      }
+
+      .post-image-link img {
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        width: 100%;
+      }
+
+      .hero-image {
+        border-radius: 8px;
+        height: auto;
+        margin-bottom: 28px;
+        width: 100%;
+      }
+
+      .post-card h2 a {
+        text-decoration: none;
+      }
+
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag-list a {
+        background: var(--accent-soft);
+        border-radius: 999px;
+        color: #075e54;
+        font-size: 0.88rem;
+        padding: 3px 10px;
+        text-decoration: none;
+      }
+
+      .article-body {
+        font-size: 1.06rem;
+      }
+
+      .article-body h2,
+      .article-body h3 {
+        margin-top: 34px;
+      }
+
+      .article-body ul,
+      .article-body ol {
+        padding-left: 1.4rem;
+      }
+
+      .ad-slot {
+        border: 1px dashed var(--line);
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin: 32px 0;
+        padding: 18px;
+        text-align: center;
+      }
+
+      .floating-contact {
+        bottom: max(18px, env(safe-area-inset-bottom));
+        display: grid;
+        gap: 10px;
+        position: fixed;
+        right: max(18px, env(safe-area-inset-right));
+        width: min(190px, calc(100vw - 32px));
+        z-index: 50;
+      }
+
+      .floating-contact-button {
+        align-items: center;
+        border-radius: 999px;
+        box-shadow: 0 8px 20px rgb(15 23 42 / 18%);
+        display: flex;
+        font-size: 1rem;
+        font-weight: 800;
+        gap: 4px;
+        justify-content: center;
+        min-height: 56px;
+        padding: 0 18px;
+        text-decoration: none;
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease;
+        white-space: nowrap;
+      }
+
+      .floating-contact-button:hover {
+        box-shadow: 0 12px 28px rgb(15 23 42 / 22%);
+        color: inherit;
+        transform: translateY(-2px);
+      }
+
+      .floating-contact-button.phone {
+        background: #111111;
+        color: #ffffff;
+      }
+
+      .floating-contact-button.sms {
+        background: #4caf50;
+        color: #ffffff;
+      }
+
+      .floating-contact-button.kakao {
+        background: #fee500;
+        color: #191919;
+      }
+
+      @media (min-width: 720px) {
+        .post-card {
+          grid-template-columns: 220px 1fr;
+        }
+      }
+
+      @media (max-width: 520px) {
+        body {
+          padding-bottom: 204px;
+        }
+
+        .floating-contact {
+          left: 16px;
+          right: 16px;
+          width: auto;
+        }
+
+        .floating-contact-button {
+          font-size: 0.96rem;
+          min-height: 52px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a class="brand" href="/">{siteConfig.siteName}</a>
+        <div class="nav-links">
+          <a href="/posts/">Posts</a>
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>&copy; {new Date().getFullYear()} {siteConfig.siteName}. Built as a static SEO blog.</p>
+    </footer>
+    <FloatingContactButtons />
+  </body>
+</html>

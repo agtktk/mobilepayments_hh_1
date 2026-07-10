@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getAllPosts } from '../../lib/posts';
+
+const posts = await getAllPosts();
+---
+
+<BaseLayout title="전체 글" description="블로그에 발행된 모든 글 목록입니다." canonicalPath="/posts/">
+  <section class="page-heading">
+    <p class="eyebrow">{posts.length} posts</p>
+    <h1>전체 글</h1>
+    <p class="lead">최신 글부터 차례대로 모아두었습니다.</p>
+  </section>
+  <PostList posts={posts} />
+</BaseLayout>
